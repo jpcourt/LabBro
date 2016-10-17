@@ -25,12 +25,3 @@ var layoutConfig = [
 	}
 ];
 
-function getLayoutZone(partId){
-	var res = "";
-	layoutConfig.forEach(function(zone){
-		if(zone.content.indexOf(partId) != -1){
-			res = zone.id;
-		}
-	});
-	return res;
-}

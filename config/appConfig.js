@@ -2,12 +2,12 @@ var availableLanguages = [
 	{ 
 		"id" : "fr",
 		"label" : "Français",
-		"img" : "french_flag.png"
+		"img" : "resources/french_flag.png"
 	},
 	{ 
 		"id" : "en",
 		"label" : "English",
-		"img" : "english_flag.png"
+		"img" : "resources/english_flag.png"
 	}
 ];
 
