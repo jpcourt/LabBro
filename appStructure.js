@@ -300,12 +300,12 @@ var AppGrid = React.createClass({
 					fileData["fileContent"] = cleanXml;
 					$.ajax({
 						method: "POST",
-						url: "safariUpload.php",
+						url: "safariWorkaround/safariUpload.php",
 						data: JSON.stringify(fileData)
 					}).done(function(data){
 						if(JSON.parse(data)["result"] == "OK"){
 							var downloadLink = document.createElement('a');
-							downloadLink.href = "safariDownload.php?fileName="+JSON.parse(data)["message"];
+							downloadLink.href = "safariWorkaround/safariDownload.php?fileName="+JSON.parse(data)["message"];
 							downloadLink.innerHTML = "<strong>DOWNLOAD YOU FILE</strong>";
 							downloadLink.addEventListener("click", function(){document.body.removeChild(document.getElementById("prompterBackground"));}, false);
 							var background = document.createElement('div');
