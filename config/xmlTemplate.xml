@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<p:PADexchange_V5.0 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://com.canalplus.mit/padv5" xsi:schemaLocation="http://com.canalplus.mit/padv5 asbo/PADexchange_V5.0.xsd">
+<Descriptive>
+<BroadcasterPrivateID><%= fileDescriptionPart.houseId %></BroadcasterPrivateID>
+<BroadcasterName><%= fileDescriptionPart.broadcaster %></BroadcasterName>
+<PostHouseName><![CDATA[<%= fileDescriptionPart.fileProvider %>]]></PostHouseName>
+<% if(typeof fileDescriptionPart.natureCplus != "undefined"){ %>
+<ProgramNature><%= fileDescriptionPart.natureCplus %></ProgramNature>
+<% }else{ %>
+<ProgramNature><%= fileDescriptionPart.nature %></ProgramNature>
+<% } %>
+<% if(typeof fileDescriptionPart.versionType != "undefined"){ %>
+<ProgramType><%= fileDescriptionPart.versionType %></ProgramType>
+<% } %>
+<ProgramTitle><![CDATA[<%= fileDescriptionPart.localProgramTitle %>]]></ProgramTitle>
+<ProgramSecondTitle><%= fileDescriptionPart.localEpisodeTitle %></ProgramSecondTitle>
+<VO_ProgramTitle><%= fileDescriptionPart.originalProgramTitle %></VO_ProgramTitle>
+<VO_ProgramSecondTitle><%= fileDescriptionPart.originalEpisodeTitle %></VO_ProgramSecondTitle>
+<Revision_ID><%= fileDescriptionPart.revisionId %></Revision_ID>
+<ProgramDuration><%= techInfoPart.programDuration %></ProgramDuration>
+<ClientPartNum>1</ClientPartNum>
+<ClientPartTotal>1</ClientPartTotal>
+<XmlGeneratorName>MetaPADTV</XmlGeneratorName>
+<XmlGeneratorRelease>1.1</XmlGeneratorRelease>
+<XmlFileRelease>1.1</XmlFileRelease>
+</Descriptive>
+<p:Technical>
+<TC_IN_Header><%= techInfoPart.tcInFile %></TC_IN_Header>
+<TC_OUT_Footer><%= techInfoPart.tcOutFile %></TC_OUT_Footer>
+<TC_IN_PGM><%= techInfoPart.tcInProg %></TC_IN_PGM>
+<TC_OUT_PGM><%= techInfoPart.tcOutProg %></TC_OUT_PGM>
+<% if(techInfoPart.fileSpec != "NA"){ %>
+<ApplicationSpecification><%= techInfoPart.fileSpec %></ApplicationSpecification>
+<% }else{ %>
+<ApplicationSpecification />
+<% } %>
+<% if(techInfoPart.fileSpec == "AS10"){ %>
+<Shim>HIGH_HD_2014</Shim>
+<% }else{ %>
+<Shim />
+<% } %>
+<HashType><%= techInfoPart.hashType %></HashType>
+<% if(typeof techInfoPart.hashCode != "undefined"){ %>
+<HashValue><%= techInfoPart.hashCode %></HashValue>
+<% }else{ %>
+<HashValue />
+<% } %>
+<Video_remarks><%= techInfoPart.videoRemarks %></Video_remarks>
+<Audio_remarks><%= techInfoPart.audioRemarks %></Audio_remarks>
+<Other_remarks><%= techInfoPart.otherRemarks %></Other_remarks>
+<% if(typeof segmentationPart.children != "undefined" && segmentationPart.children.length > 0){ %>
+<Segment>
+<Number_SEG><%= segmentationPart.partNumber %></Number_SEG>
+<% _.each(segmentationPart.children, function(segPart) { %>
+<SegmentPart>
+<SEG_ID><%= segPart.partNumero + 1 %></SEG_ID>
+<TC_IN_SEG><%= segPart.tcIn %></TC_IN_SEG>
+<TC_OUT_SEG><%= segPart.tcOut %></TC_OUT_SEG>
+</SegmentPart>
+<% }); %>
+</Segment>
+<% } %>
+<% if(typeof subTitlePart.children != "undefined" && subTitlePart.children.length > 0){ %>
+<Subtitling>
+<Number_ST><%= subTitlePart.stlNb %></Number_ST>
+<% _.each(subTitlePart.children, function(sub) { %>
+<SubtitlingTrack>
+<Subtitling_ID><%= sub.stlNumero + 1 %></Subtitling_ID>
+<SubtitlingType><%= sub.stlType %></SubtitlingType>
+<SubtitlingVersion><%= sub.stlVersion %></SubtitlingVersion>
+<LanguageCode><%= sub.languageCode %></LanguageCode>
+</SubtitlingTrack>
+<% }); %>
+</Subtitling>
+<% } %>
+<Video>
+<OriginalPictureFormat><%= videoDescPart.picFormat %></OriginalPictureFormat>
+<VideoPictureFormat><%= videoDescPart.aspectRatio %></VideoPictureFormat>
+<VideoProfile><%= videoDescPart.resolution %></VideoProfile>
+<Codec>XDCAM HD</Codec>
+<BitRate>50000000</BitRate>
+<Width>1920</Width>
+<Height>1080</Height>
+<FrameRate>25</FrameRate>
+<ScanningMode>I</ScanningMode>
+<Stereo3D><%= videoDescPart['3DContent'] %></Stereo3D>
+<% if(typeof videoDescPart['3DMode'] != "undefined"){ %>
+<Stereo3DMode><%= videoDescPart['3DMode'] %></Stereo3DMode>
+<% }else{ %>
+<Stereo3DMode />
+<% } %>
+</Video>
+<Audio>
+<FileChannelCount><%= audioDescPart.channelNumber %></FileChannelCount>
+<FileBitDepth><%= audioDescPart.audioQuant %></FileBitDepth>
+<FileTrackType><%= audioDescPart.audioTrackType %></FileTrackType>
+<Number_audio><%= audioDescPart.children.length %></Number_audio>
+<% _.each(audioDescPart.children, function(audioTrack) { %>
+<% if(audioTrack.audioType != "Non exploité"){ %>
+<Audio_stream>
+<Stream_ID><%= audioTrack.audioPairNumero + 1 %></Stream_ID>
+<AudioType><%= audioTrack.audioType %></AudioType>
+<% if(audioTrack.audioType == "Audio_PCM"){ %>
+<Audio_PCM>
+<Version><%= audioTrack.audioVersion %></Version>
+<LanguageCode><%= audioTrack.audioLanguage %></LanguageCode>
+<Loudness><%= audioTrack.loudness %></Loudness>
+</Audio_PCM>
+<% }else if(audioTrack.audioType == "DolbyE"){ %>
+<DolbyE>
+<Program1>
+<Pgm_Version><%= audioTrack.audioVersion %></Pgm_Version>
+<LanguageCode><%= audioTrack.audioLanguage %></LanguageCode>
+<MixType><%= audioTrack.p1MixType %></MixType>
+<Loudness><%= audioTrack.loudness %></Loudness>
+<DolbyDialogLevel><%= audioTrack.dolbyDialogLevel %></DolbyDialogLevel>
+<DolbyDialogLevelMetadata><%= audioTrack.dolbyDialogLevelMetadata %></DolbyDialogLevelMetadata>
+</Program1>
+<Program2>
+<Pgm_Version><%= audioTrack.p2AudioVersion %></Pgm_Version>
+<LanguageCode><%= audioTrack.p2AudioLanguage %></LanguageCode>
+<Loudness><%= audioTrack.p2Loudness %></Loudness>
+<DolbyDialogLevel><%= audioTrack.p2DolbyDialogLevel %></DolbyDialogLevel>
+<DolbyDialogLevelMetadata><%= audioTrack.p2DolbyDialogLevelMetadata %></DolbyDialogLevelMetadata>
+</Program2>
+</DolbyE>
+<% } %>
+</Audio_stream>
+<% } %>
+<% }); %>
+</Audio>
+</p:Technical>
+</p:PADexchange_V5.0>
